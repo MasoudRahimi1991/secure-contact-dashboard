@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard | Secure Contact System</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+    <div class="admin-layout">
+
+        <aside class="sidebar">
+            <h2>SecureAdmin</h2>
+
+            <nav>
+                <a href="admin.html" class="active">Messages</a>
+                <a href="index.html">Contact Page</a>
+            </nav>
+        </aside>
+
+        <main class="dashboard">
+
+            <header class="dashboard-header">
+                <div>
+                    <p class="badge">Admin Panel</p>
+                    <h1>Message Dashboard</h1>
+                    <p class="subtitle">
+                        Manage inbox messages, archived messages and message status.
+                    </p>
+                </div>
+
+                <button id="refreshBtn">Refresh</button>
+                <button id="logoutBtn" class="logout-btn">Logout</button>
+            </header>
+
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <span>Total Messages</span>
+                    <strong id="totalMessages">0</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>New Messages</span>
+                    <strong id="newMessages">0</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Read Messages</span>
+                    <strong id="readMessages">0</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Archived Messages</span>
+                    <strong id="archivedMessages">0</strong>
+                </div>
+            </section>
+
+            <section class="table-card">
+
+                <div class="table-header">
+                    <div>
+                        <h2 id="currentViewTitle">Inbox</h2>
+
+                        <div class="view-buttons">
+                            <button id="inboxViewBtn" class="view-btn active">
+                                Inbox
+                            </button>
+
+                            <button id="archiveViewBtn" class="view-btn">
+                                Archive
+                            </button>
+                        </div>
+                    </div>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search messages..."
+                    >
+                </div>
+
+                <div id="messageContainer" class="message-list">
+                    <p class="empty-text">No messages loaded yet.</p>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
