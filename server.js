@@ -85,7 +85,7 @@ app.use(express.static("public"));
 
 const contactSpeedLimiter = slowDown({
     windowMs: 15 * 60 * 1000,
-    delayAfter: 100,
+    delayAfter: 3,
     delayMs: function(hits) {
         return hits * 100;
     }
@@ -93,7 +93,7 @@ const contactSpeedLimiter = slowDown({
 
 const contactRateLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 100,
+    max:5,
     standardHeaders: true,
     legacyHeaders: false,
     message: {
