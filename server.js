@@ -525,6 +525,26 @@ app.delete("/api/messages/:id", requireAuth, async function(req, res) {
         });
     }
 });
+async function initializeDatabase() {
+    try {
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS messages (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(100) NOT NULL,
+                email VARCHAR(150) NOT NULL,
+                subject VARCHAR(150) NOT NULL,
+                message TEXT NOT NULL,
+                status VARCHAR(20) NOT NULL DEFAULT 'new'
+            )
+        `);
+
+        console.log("Messages table is ready");
+    } catch (error) {
+        console.error("DATABASE INIT ERROR:", error);
+    }
+}
+
+initializeDatabase();
 
 app.listen(PORT, function() {
     console.log(`Server is running on http://localhost:${PORT}`);
