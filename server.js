@@ -117,6 +117,11 @@ function isValidId(id) {
     return validator.isInt(String(id), { min: 1 });
 }
 
+function containsDangerousHtml(value) {
+    const dangerousPattern = /<\s*script|<\/\s*script|javascript:|onerror\s*=|onload\s*=|onclick\s*=|<\s*iframe|<\s*object|<\s*embed/i;
+
+    return dangerousPattern.test(String(value));
+}
 function validateMessageBody(body) {
     const allowedFields = [
         "name",
@@ -157,6 +162,14 @@ function validateMessageBody(body) {
     if (name.trim().length < 2 || name.trim().length > 100) {
         return "Name must be between 2 and 100 characters";
     }
+    if (
+    containsDangerousHtml(name) ||
+    containsDangerousHtml(email) ||
+    containsDangerousHtml(subject) ||
+    containsDangerousHtml(message)
+) {
+    return "HTML or script content is not allowed";
+}
 
     if (!validator.isEmail(email.trim())) {
         return "Invalid email address";
@@ -196,7 +209,8 @@ async function checkPassword(inputPassword) {
 }
 
 app.post("/api/login", loginRateLimiter, async function(req, res) {
-     console.log("LOGIN ROUTE HIT")
+    console.log("LOGIN ROUTE HIT");
+
     try {
         const { username, password } = req.body;
 
@@ -207,6 +221,38 @@ app.post("/api/login", loginRateLimiter, async function(req, res) {
             return res.status(400).json({
                 success: false,
                 message: "Username and password are required"
+            });
+        }
+
+        if (
+            username.trim() === "" ||
+            password.trim() === ""
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Username and password are required"
+            });
+        }
+
+        if (
+            username.trim().length < 3 ||
+            username.trim().length > 50 ||
+            password.length < 6 ||
+            password.length > 100
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid input"
+            });
+        }
+
+        if (
+            containsDangerousHtml(username) ||
+            containsDangerousHtml(password)
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid input"
             });
         }
 
