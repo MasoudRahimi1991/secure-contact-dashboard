@@ -128,11 +128,48 @@ button:hover {
 }
 
 @media (max-width: 850px) {
+
+    .page {
+        min-height: auto;
+        padding: 30px 16px;
+    }
+
     .hero {
         grid-template-columns: 1fr;
+        gap: 25px;
+        text-align: center;
     }
 
     .hero h1 {
-        font-size: 36px;
+        font-size: 32px;
+    }
+
+    .hero-text {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .contact-card {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .hero h1 {
+        font-size: 28px;
+    }
+
+    .contact-card {
+        padding: 20px;
+    }
+
+    input,
+    textarea,
+    button {
+        font-size: 14px;
     }
 }
