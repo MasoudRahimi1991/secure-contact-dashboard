@@ -34,9 +34,7 @@ async function loadMessages() {
         console.error("LOAD MESSAGES ERROR:", error);
 
         messageContainer.innerHTML = `
-            <p class="empty-text">
-                Failed to load messages.
-            </p>
+            <p class="empty-text">Failed to load messages.</p>
         `;
     }
 }
@@ -44,20 +42,17 @@ async function loadMessages() {
 function updateStatistics() {
     totalMessagesElement.textContent = allMessages.length;
 
-    newMessagesElement.textContent =
-        allMessages.filter(function(message) {
-            return message.status === "new";
-        }).length;
+    newMessagesElement.textContent = allMessages.filter(function(message) {
+        return message.status === "new";
+    }).length;
 
-    readMessagesElement.textContent =
-        allMessages.filter(function(message) {
-            return message.status === "read";
-        }).length;
+    readMessagesElement.textContent = allMessages.filter(function(message) {
+        return message.status === "read";
+    }).length;
 
-    archivedMessagesElement.textContent =
-        allMessages.filter(function(message) {
-            return message.status === "archived";
-        }).length;
+    archivedMessagesElement.textContent = allMessages.filter(function(message) {
+        return message.status === "archived";
+    }).length;
 }
 
 function getMessagesByCurrentView() {
@@ -93,18 +88,14 @@ function getFilteredMessages() {
 
 function renderCurrentView() {
     const messages = getFilteredMessages();
-
     renderMessages(messages);
 }
 
 function renderMessages(messages) {
     if (messages.length === 0) {
         messageContainer.innerHTML = `
-            <p class="empty-text">
-                No messages found.
-            </p>
+            <p class="empty-text">No messages found.</p>
         `;
-
         return;
     }
 
@@ -112,18 +103,14 @@ function renderMessages(messages) {
 
     messages.forEach(function(message) {
         const card = document.createElement("div");
-
         card.classList.add("message-card");
 
         card.innerHTML = `
             <div class="message-top">
                 <div>
                     <h3>${escapeHtml(message.subject)}</h3>
-
                     <p class="message-meta">
-                        ${escapeHtml(message.name)}
-                        |
-                        ${escapeHtml(message.email)}
+                        ${escapeHtml(message.name)} | ${escapeHtml(message.email)}
                     </p>
                 </div>
 
@@ -148,52 +135,30 @@ function renderMessages(messages) {
 function getActionButtons(message) {
     if (message.status === "archived") {
         return `
-            <button
-                class="restore-btn"
-                data-action="status"
-                data-id="${message.id}"
-                data-status="new">
+            <button class="restore-btn" data-action="status" data-id="${message.id}" data-status="new">
                 Restore To New
             </button>
 
-            <button
-                class="read-btn"
-                data-action="status"
-                data-id="${message.id}"
-                data-status="read">
+            <button class="read-btn" data-action="status" data-id="${message.id}" data-status="read">
                 Restore To Read
             </button>
 
-            <button
-                class="delete-btn"
-                data-action="delete"
-                data-id="${message.id}">
+            <button class="delete-btn" data-action="delete" data-id="${message.id}">
                 Delete
             </button>
         `;
     }
 
     return `
-        <button
-            class="read-btn"
-            data-action="status"
-            data-id="${message.id}"
-            data-status="read">
+        <button class="read-btn" data-action="status" data-id="${message.id}" data-status="read">
             Mark Read
         </button>
 
-        <button
-            class="archive-btn"
-            data-action="status"
-            data-id="${message.id}"
-            data-status="archived">
+        <button class="archive-btn" data-action="status" data-id="${message.id}" data-status="archived">
             Archive
         </button>
 
-        <button
-            class="delete-btn"
-            data-action="delete"
-            data-id="${message.id}">
+        <button class="delete-btn" data-action="delete" data-id="${message.id}">
             Delete
         </button>
     `;
@@ -248,21 +213,21 @@ async function deleteMessage(id) {
         await loadMessages();
 
     } catch (error) {
-        console.error("DELETE MESSAGE ERROR:", error);
 
-        if (
-            error.message ===
-            "Permanent delete is disabled in demo mode"
-        ) {
-            alert(
-                "This feature is disabled for demo users. Permanent deletion is not available in demo mode."
-            );
+    if (
+        error.message ===
+        "Permanent delete is disabled in demo mode"
+    ) {
 
-            return;
-        }
+        alert(
+            "This feature is disabled for demo users. Permanent deletion is not available in demo mode."
+        );
 
-        alert(error.message || "Failed to delete message.");
+        return;
     }
+
+    alert(error.message);
+}
 }
 
 function switchToInbox() {
@@ -295,10 +260,7 @@ function escapeHtml(value) {
 }
 
 refreshButton.addEventListener("click", loadMessages);
-
-searchInput.addEventListener("input", function() {
-    renderCurrentView();
-});
+searchInput.addEventListener("input", renderCurrentView);
 
 inboxViewButton.addEventListener("click", switchToInbox);
 archiveViewButton.addEventListener("click", switchToArchive);
@@ -321,7 +283,6 @@ messageContainer.addEventListener("click", function(event) {
         deleteMessage(id);
     }
 });
-
 logoutButton.addEventListener("click", async function() {
     try {
         await fetch("/api/logout", {
